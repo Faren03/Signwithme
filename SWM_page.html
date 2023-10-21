@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Saver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #inputField {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sign With Me</h1>
+    <input type="text" id="inputField" placeholder="Enter your input">
+    <button onclick="saveInput()">Save Input</button>
+    <div id="savedInput"></div>
+
+    <script>
+        // Function to save the input to local storage
+        function saveInput() {
+            const input = document.getElementById("inputField").value;
+            if (input) {
+                localStorage.setItem("savedInput", input);
+                document.getElementById("savedInput").textContent = "Saved input: " + input;
+            }
+        }
+
+        // Check if there's saved input in local storage and display it
+        window.addEventListener('load', function () {
+            const savedInput = localStorage.getItem("savedInput");
+            if (savedInput) {
+                document.getElementById("savedInput").textContent = "Saved input: " + savedInput;
+            }
+        });
+    </script>
+</body>
+</html>
