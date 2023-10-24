@@ -1,18 +1,30 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
+import pandas as pd
 
 app = Flask(__name__)
 
-# Sample data (you can replace this with your data)
-data = [
-    {"id": 1, "name": "Item 1"},
-    {"id": 2, "name": "Item 2"},
-    {"id": 3, "name": "Item 3"},
-]
+@app.route('/parse-file', methods=['POST'])
+def parse_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'})
 
-# Define a route for your API endpoint
-@app.route('/api/items', methods=['GET'])
-def get_items():
-    return jsonify(data)
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'})
+
+    if file:
+        try:
+            # Read the file using pandas
+            df = pd.read_csv(file)
+            # Assuming the CSV file has a 'text' column, you can categorize words here
+            # For simplicity, we'll just split and categorize the words based on their length
+            df['category'] = df['text'].apply(lambda x: 'short' if len(x) < 5 else 'long')
+
+            # Return the categorized data as JSON
+            return jsonify(df.to_dict(orient='records'))
+
+        except Exception as e:
+            return jsonify({'error': f'Error processing the file: {str(e)}'})
 
 if __name__ == '__main__':
     app.run(debug=True)
