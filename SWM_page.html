@@ -1,251 +1,96 @@
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Saver</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        #inputField {
-            margin: 20px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Sign With Me</h1>
-    <input type="text" id="inputField" placeholder="Enter your input">
-    <button onclick="saveInput()">Save Input</button>
-    <div id="savedInput"></div>
+import pygame
+import sys
+import math
 
-    <script>
-        // Function to save the input to local storage
-        function saveInput() {
-            const input = document.getElementById("inputField").value;
-            if (input) {
-                localStorage.setItem("savedInput", input);
-                document.getElementById("savedInput").textContent = "Saved input: " + input;
-            }
-        }
+# Initialize Pygame
+pygame.init()
 
-        // Check if there's saved input in local storage and display it
-        window.addEventListener('load', function () {
-            const savedInput = localStorage.getItem("savedInput");
-            if (savedInput) {
-                document.getElementById("savedInput").textContent = "Saved input: " + savedInput;
-            }
-        });
-    </script>
-</body>
-</html>
--->
+# Constants for screen dimensions
+SCREEN_WIDTH = 400
+SCREEN_HEIGHT = 400
 
+# Colors
+WHITE = (255, 255, 255)
 
-<!--
+# Initialize screen
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Customizable Animated Avatar")
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Messaging System</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
+# Character state
+x_position = 200
+y_position = 150
+initial_hand_angle = 0  # Start the arm at the side
+hand_angle = initial_hand_angle
+vertical_oscillation = 20  # Increase the vertical movement for a more noticeable effect
+vertical_motion_direction = 1  # 1 for upward motion, -1 for downward motion
+vertical_motion_speed = 2  # Adjust the speed of the vertical motion
 
-    #chat-container {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+# Function to draw the character
+def draw_character(head_color, body_color, hand_color):
+    # Clear the screen
+    screen.fill(WHITE)
 
-    #message-box {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
+    # Draw head
+    pygame.draw.circle(screen, head_color, (x_position, y_position), 30)
 
-    #message-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
+    # Draw body
+    pygame.draw.rect(screen, body_color, (x_position - 15, y_position + 30, 30, 50))
 
-    .message {
-      margin-bottom: 10px;
-    }
+    # Calculate vertical motion
+    vertical_motion = vertical_oscillation * math.sin(math.radians(hand_angle))
 
-    .user {
-      font-weight: bold;
-      color: #007bff;
-    }
-  </style>
-</head>
-<body>
-  <div id="chat-container">
-    <ul id="message-list"></ul>
-    <input type="text" id="message-box" placeholder="Type your message...">
-    <button onclick="sendMessage()">Send</button>
-  </div>
+    # Draw right arm (waving with vertical motion)
+    arm_length = 30
+    arm_end = rotate_point(x_position, y_position + 30, hand_angle, arm_length)
+    arm_end = (arm_end[0], arm_end[1] + vertical_motion)  # Adjust the vertical position of the arm end
+    pygame.draw.line(screen, body_color, (x_position, y_position + 30), arm_end, 10)
 
-  <script>
-    function sendMessage() {
-      const messageBox = document.getElementById('message-box');
-      const message = messageBox.value.trim();
+    # Draw right hand (waving)
+    pygame.draw.circle(screen, hand_color, arm_end, 8)
 
-      if (message !== '') {
-        const messageList = document.getElementById('message-list');
-        const li = document.createElement('li');
-        li.className = 'message';
-        li.innerHTML = `<span class="user">You:</span> ${message}`;
-        messageList.appendChild(li);
+    # Update the display
+    pygame.display.flip()
 
-        // Clear the input box
-        messageBox.value = '';
-      }
-    }
-  </script>
-</body>
-</html>
--->
+# Function to rotate a point around another point
+def rotate_point(x, y, angle, distance):
+    radian_angle = math.radians(angle)
+    new_x = x + distance * math.cos(radian_angle)
+    new_y = y + distance * math.sin(radian_angle)
+    return int(new_x), int(new_y)
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Messaging System with ASL Translation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
+# Function to get user input for customization
+def get_user_customization():
+    head_color = tuple(map(int, input("Enter head color (R G B): ").split()))
+    body_color = tuple(map(int, input("Enter body color (R G B): ").split()))
+    hand_color = tuple(map(int, input("Enter hand color (R G B): ").split()))
 
-    #chat-container {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+    return head_color, body_color, hand_color
 
-    #message-box {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
+# Get user input for customization only once
+try:
+    head_color, body_color, hand_color = get_user_customization()
+except ValueError:
+    print("Invalid input. Please enter three integers separated by spaces for each color.")
+    sys.exit()
 
-    #message-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
+# Event loop
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
-    .message {
-      margin-bottom: 10px;
-    }
+    # Update character state and animate waving with vertical motion
+    hand_angle += 2  # Adjust the speed of the wave
 
-    .user {
-      font-weight: bold;
-      color: #007bff;
-    }
-  </style>
-</head>
-<body>
-  <div id="chat-container">
-    <ul id="message-list"></ul>
-    <input type="text" id="message-box" placeholder="Type your message..." oninput="checkForASL()">
-    <button onclick="sendMessage()">Send</button>
-    <button onclick="switchUser()">Switch User</button>
-    <button onclick="translateToASL()">Translate to ASL</button>
-  </div>
+    # Change direction of vertical motion at the limits
+    if hand_angle >= initial_hand_angle + 45 or hand_angle <= initial_hand_angle - 45:
+        vertical_motion_direction *= -1
 
-  <script>
-    let currentUser = 'User';
-    let translationApplied = false;
+    # Update vertical motion
+    vertical_oscillation += vertical_motion_direction * vertical_motion_speed
 
-    function sendMessage() {
-      const messageBox = document.getElementById('message-box');
-      const message = messageBox.value.trim();
+    draw_character(head_color, body_color, hand_color)
 
-      if (message !== '') {
-        const messageList = document.getElementById('message-list');
-        const li = document.createElement('li');
-        li.className = 'message';
-        li.innerHTML = `<span class="user">${currentUser}:</span> ${message}`;
-        messageList.appendChild(li);
-
-        // Clear the input box
-        messageBox.value = '';
-        
-        // Reset translation flag
-        translationApplied = false;
-      }
-    }
-
-    function switchUser() {
-      currentUser = currentUser === 'User' ? 'Another User' : 'User';
-    }
-
-    function translateToASL() {
-      if (!translationApplied) {
-        const messageList = document.getElementById('message-list');
-        const messages = messageList.getElementsByTagName('li');
-
-        for (let i = 0; i < messages.length; i++) {
-          const messageText = messages[i].textContent.split(': ')[1];
-          const aslResult = translateToASLText(messageText);
-          messages[i].innerHTML = `<span class="user">${currentUser}:</span> ${aslResult}`;
-        }
-
-        // Set translation flag to true
-        translationApplied = true;
-      }
-    }
-
-    function translateToASLText(text) {
-      const asl_dictionary = {
-        "hello": "👋",
-        "world": "🌎",
-        "how": "🤔",
-        "are": "👍",
-        "you": "👋",
-      };
-
-      const words = text.toLowerCase().split(' ');
-      let aslTranslation = '';
-
-      for (const word of words) {
-        if (asl_dictionary[word]) {
-          aslTranslation += asl_dictionary[word] + ' ';
-        } else {
-          aslTranslation += word + ' ';
-        }
-      }
-
-      return aslTranslation.trim();
-    }
-
-    function checkForASL() {
-      const messageBox = document.getElementById('message-box');
-      const inputText = messageBox.value.trim().toLowerCase();
-
-      if (inputText in asl_dictionary) {
-        messageBox.value = asl_dictionary[inputText];
-      }
-    }
-  </script>
-</body>
-</html>
-
+    # Wait for a short duration to control the frame rate
+    pygame.time.delay(50)
