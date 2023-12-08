@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <!-- Meta tags and other head content -->
+    <link rel="stylesheet" type="text/css" href="chat_with_asl.css">
+
 </head>
 <body>
   <div id="chat-container">
@@ -21,8 +23,8 @@
   <script>
     function displayASLVideo() {
       const modal = document.getElementById('asl-modal');
-      const video = document.getElementById('asl-video');
-      video.src = 'https://www.youtube.com/watch?v=0FcwzMq4iWg';
+      const video = document.getElementById('asl-video');       
+      video.src="https://www.youtube.com/embed/0FcwzMq4iWg?si=_gdHxkT4WhIUQTzH";
       modal.style.display = 'block';
     }
 
