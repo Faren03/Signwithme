@@ -4,43 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Messaging System with ASL Translation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-
-    #chat-container {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    #message-box {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-
-    #message-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .message {
-      margin-bottom: 10px;
-    }
-
-    .user {
-      font-weight: bold;
-      color: #007bff;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="chat-container">
@@ -51,50 +15,6 @@
     <button onclick="translateToASL()">Translate to ASL</button>
   </div>
 
-  <script>
-    let currentUser = 'User';
-    let translationApplied = false;
-
-    function sendMessage() {
-      const messageBox = document.getElementById('message-box');
-      const message = messageBox.value.trim();
-
-      if (message !== '') {
-        const messageList = document.getElementById('message-list');
-        const li = document.createElement('li');
-        li.className = 'message';
-        li.innerHTML = `<span class="user">${currentUser}:</span> ${message}`;
-        messageList.appendChild(li);
-
-        // Clear the input box
-        messageBox.value = '';
-
-        // Reset translation flag
-        translationApplied = false;
-      }
-    }
-
-    function switchUser() {
-      currentUser = currentUser === 'User' ? 'Another User' : 'User';
-    }
-
-    function translateToASL() {
-      if (!translationApplied) {
-        const messageList = document.getElementById('message-list');
-        const messages = messageList.getElementsByTagName('li');
-
-        for (let i = 0; i < messages.length; i++) {
-          const messageText = messages[i].textContent.split(': ')[1];
-          const aslResult = translateToASLText(messageText);
-          messages[i].innerHTML = `<span class="user">${currentUser}:</span> ${aslResult}`;
-        }
-
-        // Set translation flag to true
-        translationApplied = true;
-      }
-    }
-
-   
-  </script>
+  <script src="scripts.js"></script>
 </body>
 </html>
