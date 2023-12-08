@@ -1,0 +1,14 @@
+let words = []; // Words vector to store user data
+
+function storeWord() {
+  const messageBox = document.getElementById('messageBox');
+  const word = messageBox.value.trim(); // Get the user input
+
+  if (word !== '') {
+    words.push(word); // Store the word into the words vector
+    messageBox.value = ''; // Clear the message box
+    console.log('Words vector:', words); // Log the words vector (for demonstration)
+  } else {
+    alert('Please enter a word.'); // Notify if input is empty
+  }
+}
