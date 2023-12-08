@@ -94,37 +94,7 @@
       }
     }
 
-    function translateToASLText(text) {
-      const asl_dictionary = {
-        "hello": "👋",
-        "world": "🌎",
-        "how": "🤔",
-        "are": "👍",
-        "you": "👋",
-      };
-
-      const words = text.toLowerCase().split(' ');
-      let aslTranslation = '';
-
-      for (const word of words) {
-        if (asl_dictionary[word]) {
-          aslTranslation += asl_dictionary[word] + ' ';
-        } else {
-          aslTranslation += word + ' ';
-        }
-      }
-
-      return aslTranslation.trim();
-    }
-
-    function checkForASL() {
-      const messageBox = document.getElementById('message-box');
-      const inputText = messageBox.value.trim().toLowerCase();
-
-      if (inputText in asl_dictionary) {
-        messageBox.value = asl_dictionary[inputText];
-      }
-    }
+   
   </script>
 </body>
 </html>
