@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/fetch_words')
 def fetch_words():
-    url = 'https://www.lifeprint.com/dictionary.htm'  # Replace with your desired URL
+    url = 'https://www.lifeprint.com/dictionary.htm' 
     html_content = fetch_page(url)
     if html_content:
         words = parse_words(html_content)
