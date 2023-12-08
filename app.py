@@ -1,5 +1,4 @@
-
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import requests
 from bs4 import BeautifulSoup
 
@@ -14,6 +13,17 @@ def fetch_words():
         return jsonify({'words': words})
     else:
         return jsonify({'words': []})
+
+@app.route('/send-message', methods=['POST'])
+def receive_message():
+    data = request.get_json()
+    message = data.get('message')
+    
+    # Process the message or store it as needed
+    print(f"Received message: {message}")
+    
+    # You can send a response back if needed
+    return jsonify({'status': 'success'})
 
 def fetch_page(url):
     response = requests.get(url)
@@ -33,3 +43,4 @@ def parse_words(html_content):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
