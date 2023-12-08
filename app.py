@@ -1,30 +1,35 @@
-from flask import Flask, request, jsonify
-import pandas as pd
+
+from flask import Flask, jsonify
+import requests
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-@app.route('/parse-file', methods=['POST'])
-def parse_file():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file provided'})
+@app.route('/fetch_words')
+def fetch_words():
+    url = 'https://www.lifeprint.com/dictionary.htm'  # Replace with your desired URL
+    html_content = fetch_page(url)
+    if html_content:
+        words = parse_words(html_content)
+        return jsonify({'words': words})
+    else:
+        return jsonify({'words': []})
 
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'})
+def fetch_page(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.content
+    else:
+        return None
 
-    if file:
-        try:
-            # Read the file using pandas
-            df = pd.read_csv(file)
-            # Assuming the CSV file has a 'text' column, you can categorize words here
-            # For simplicity, we'll just split and categorize the words based on their length
-            df['category'] = df['text'].apply(lambda x: 'short' if len(x) < 5 else 'long')
-
-            # Return the categorized data as JSON
-            return jsonify(df.to_dict(orient='records'))
-
-        except Exception as e:
-            return jsonify({'error': f'Error processing the file: {str(e)}'})
+def parse_words(html_content):
+    if html_content:
+        soup = BeautifulSoup(html_content, "html.parser")
+        word_elements = soup.find_all("td", class_="WordListTable")
+        words = [word.text.strip() for word in word_elements]
+        return words
+    else:
+        return []
 
 if __name__ == '__main__':
     app.run(debug=True)
