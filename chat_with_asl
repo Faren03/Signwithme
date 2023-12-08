@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags and other head content -->
+</head>
+<body>
+  <div id="chat-container">
+
+    <!-- Button to trigger ASL video popup -->
+    <button onclick="displayASLVideo()">Translate to ASL</button>
+  </div>
+
+  <!-- Modal for ASL video -->
+  <div id="asl-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeASLModal()">&times;</span>
+      <iframe id="asl-video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script>
+    function displayASLVideo() {
+      const modal = document.getElementById('asl-modal');
+      const video = document.getElementById('asl-video');
+      video.src = 'https://www.youtube.com/watch?v=0FcwzMq4iWg';
+      modal.style.display = 'block';
+    }
+
+    function closeASLModal() {
+      const modal = document.getElementById('asl-modal');
+      const video = document.getElementById('asl-video');
+      video.src = '';
+      modal.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
