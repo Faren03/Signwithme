@@ -1,14 +1,37 @@
-let words = []; // Words vector to store user data
+let currentUser = 'User';
+let translationApplied = false;
 
-function storeWord() {
-  const messageBox = document.getElementById('messageBox');
-  const word = messageBox.value.trim(); // Get the user input
+function sendMessage() {
+  const messageBox = document.getElementById('message-box');
+  const message = messageBox.value.trim();
 
-  if (word !== '') {
-    words.push(word); // Store the word into the words vector
-    messageBox.value = ''; // Clear the message box
-    console.log('Words vector:', words); // Log the words vector (for demonstration)
-  } else {
-    alert('Please enter a word.'); // Notify if input is empty
+  if (message !== '') {
+    sendMessageToBackend(message); // Send the message to the backend
+    const messageList = document.getElementById('message-list');
+    const li = document.createElement('li');
+    li.className = 'message';
+    li.innerHTML = `<span class="user">${currentUser}:</span> ${message}`;
+    messageList.appendChild(li);
+
+    // Clear the input box
+    messageBox.value = '';
+
+    // Reset translation flag
+    translationApplied = false;
   }
+}
+
+function sendMessageToBackend(message) {
+  // Use Fetch API to send the message to the backend
+  fetch('/send-message', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ message: message }),
+  })
+    .then(response => {
+      // Handle the response from the backend if needed
+    })
+    .catch(error => console.error('Error:', error));
 }
