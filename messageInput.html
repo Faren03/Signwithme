@@ -1,37 +1,20 @@
-let currentUser = 'User';
-let translationApplied = false;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Interface</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="chat-container">
+    <ul id="message-list" class="message-list"></ul>
+    <input type="text" id="message-box" placeholder="Type a message...">
+    <button id="send-button">Send</button>
+  </div>
+  <div class="footer">
+    <p class="try-me">Try me</p>
+  </div>
 
-function sendMessage() {
-  const messageBox = document.getElementById('message-box');
-  const message = messageBox.value.trim();
-
-  if (message !== '') {
-    sendMessageToBackend(message); // Send the message to the backend
-    const messageList = document.getElementById('message-list');
-    const li = document.createElement('li');
-    li.className = 'message';
-    li.innerHTML = `<span class="user">${currentUser}:</span> ${message}`;
-    messageList.appendChild(li);
-
-    // Clear the input box
-    messageBox.value = '';
-
-    // Reset translation flag
-    translationApplied = false;
-  }
-}
-
-function sendMessageToBackend(message) {
-  // Use Fetch API to send the message to the backend
-  fetch('/send-message', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ message: message }),
-  })
-    .then(response => {
-      // Handle the response from the backend if needed
-    })
-    .catch(error => console.error('Error:', error));
-}
+  <script src="script.js"></script>
+</body>
+</html>
