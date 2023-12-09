@@ -1,15 +1,14 @@
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-user_words = []  # List to store user-provided words
-
+user_words = [] 
 @app.route('/add_word', methods=['POST'])
 def add_word():
-    data = request.get_json()  # Get JSON data from the request
-    word = data.get('word')  # Extract the word from the JSON data
+    data = request.get_json()  
+    word = data.get('word')
 
     if word:
-        user_words.append(word)  # Add the word to the list of user words
+        user_words.append(word) 
         return jsonify({'message': 'Word added successfully'})
     else:
         return jsonify({'error': 'Invalid request'})
