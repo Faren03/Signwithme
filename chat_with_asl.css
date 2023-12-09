@@ -1,6 +1,4 @@
-/* styles.css */
 
-/* Styles for the modal */
 .modal {
   display: none;
   position: fixed;
@@ -32,7 +30,7 @@
   cursor: pointer;
 }
 
-/* Responsive styles */
+
 @media (max-width: 768px) {
   .modal-content {
     width: 90%;
